@@ -20,7 +20,9 @@ const helpMessage = `usage:
 options:
   -h, --help  show version.
 `
-const version = "0.1.0"
+
+// Version is the version of this application.
+var Version string
 
 func (cli cli) Run(args []string) int {
 	if len(args) == 1 {
@@ -33,7 +35,7 @@ func (cli cli) Run(args []string) int {
 		fmt.Fprintf(cli.outStream, "%v", helpMessage)
 		return exitCodeOK
 	case "-v", "--version":
-		fmt.Fprintln(cli.outStream, version)
+		fmt.Fprintln(cli.outStream, Version)
 		return exitCodeOK
 	}
 
