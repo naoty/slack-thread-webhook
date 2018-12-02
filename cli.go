@@ -20,6 +20,7 @@ const helpMessage = `usage:
 options:
   -h, --help  show version.
 `
+const version = "0.1.0"
 
 func (cli cli) Run(args []string) int {
 	if len(args) == 1 {
@@ -30,6 +31,9 @@ func (cli cli) Run(args []string) int {
 	switch args[1] {
 	case "-h", "--help":
 		fmt.Fprintf(cli.outStream, "%v", helpMessage)
+		return exitCodeOK
+	case "-v", "--version":
+		fmt.Fprintln(cli.outStream, version)
 		return exitCodeOK
 	}
 
