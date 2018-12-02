@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"os"
 )
 
 func main() {
-	fmt.Println("Hello, world!")
-	os.Exit(0)
+	cli := cli{outStream: os.Stdout, errStream: os.Stderr}
+	status := cli.Run(os.Args)
+	os.Exit(status)
 }
