@@ -8,7 +8,7 @@ import (
 
 func main() {
 	router := &router{}
-	router.post("/hooks", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	router.post("/hooks/(?P<id>\\d+)", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("%v\n", r)
 	}))
 

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"regexp"
 )
@@ -17,11 +18,17 @@ func (router *router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 
 	var handler http.Handler
-	for r, h := range paths {
-		if r.FindStringIndex(req.URL.Path) == nil {
-			continue
+	for re, h := range paths {
+		matched := re.FindStringSubmatch(req.URL.Path)
+		parameters := make(map[string]string)
+
+		for i, name := range re.SubexpNames() {
+			if i > 0 {
+				parameters[name] = matched[i]
+			}
 		}
 
+		fmt.Printf("parameters: %v\n", parameters)
 		handler = h
 	}
 
@@ -34,7 +41,7 @@ func (router *router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 
 func (router *router) post(pattern string, handler http.Handler) {
-	r, err := regexp.Compile(pattern)
+	re, err := regexp.Compile(pattern)
 	if err != nil {
 		return
 	}
@@ -48,5 +55,5 @@ func (router *router) post(pattern string, handler http.Handler) {
 		router.routes["POST"] = make(map[*regexp.Regexp]http.Handler)
 	}
 
-	router.routes["POST"][r] = handler
+	router.routes["POST"][re] = handler
 }
