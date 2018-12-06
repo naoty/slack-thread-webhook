@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"net/http"
 )
 
 type cli struct {
@@ -25,17 +26,20 @@ options:
 var Version string
 
 func (cli cli) Run(args []string) int {
-	if len(args) == 1 {
-		fmt.Fprintln(cli.outStream, "TODO: implement")
-		return exitCodeOK
+	if len(args) > 1 {
+		switch args[1] {
+		case "-h", "--help":
+			fmt.Fprintf(cli.outStream, "%v", helpMessage)
+			return exitCodeOK
+		case "-v", "--version":
+			fmt.Fprintln(cli.outStream, Version)
+			return exitCodeOK
+		}
 	}
 
-	switch args[1] {
-	case "-h", "--help":
-		fmt.Fprintf(cli.outStream, "%v", helpMessage)
-		return exitCodeOK
-	case "-v", "--version":
-		fmt.Fprintln(cli.outStream, Version)
+	fmt.Fprintln(cli.outStream, "HTTP server started on :3000")
+	if err := http.ListenAndServe(":3000", nil); err != nil {
+		fmt.Fprintf(cli.errStream, "%v\n", err)
 		return exitCodeOK
 	}
 
