@@ -25,7 +25,7 @@ options:
 // Version is the version of this application.
 var Version string
 
-func (cli cli) Run(args []string) int {
+func (cli cli) run(args []string) int {
 	if len(args) > 1 {
 		switch args[1] {
 		case "-h", "--help":
