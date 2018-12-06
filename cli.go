@@ -8,6 +8,7 @@ import (
 
 type cli struct {
 	outStream, errStream io.Writer
+	router *router
 }
 
 const (
@@ -38,7 +39,7 @@ func (cli cli) run(args []string) int {
 	}
 
 	fmt.Fprintln(cli.outStream, "HTTP server started on :3000")
-	if err := http.ListenAndServe(":3000", nil); err != nil {
+	if err := http.ListenAndServe(":3000", cli.router); err != nil {
 		fmt.Fprintf(cli.errStream, "%v\n", err)
 		return exitCodeOK
 	}
