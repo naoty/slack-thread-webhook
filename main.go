@@ -9,7 +9,10 @@ import (
 func main() {
 	router := &router{}
 	router.post("/hooks/(?P<id>\\d+)", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("%v\n", r)
+		params := r.Context().Value(paramsKey).(map[string]string)
+		for key, value := range params {
+			fmt.Printf("key: %v, value: %v\n", key, value)
+		}
 	}))
 
 	cli := cli{outStream: os.Stdout, errStream: os.Stderr, router: router}

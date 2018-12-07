@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"net/http"
 	"regexp"
 )
@@ -9,6 +9,12 @@ import (
 type router struct {
 	routes map[string]map[*regexp.Regexp]http.Handler
 }
+
+type contextKey int
+
+const (
+	paramsKey contextKey = iota
+)
 
 func (router *router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	paths, ok := router.routes[req.Method]
@@ -20,16 +26,19 @@ func (router *router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	var handler http.Handler
 	for re, h := range paths {
 		matched := re.FindStringSubmatch(req.URL.Path)
-		parameters := make(map[string]string)
+		params := make(map[string]string)
 
 		for i, name := range re.SubexpNames() {
 			if i > 0 {
-				parameters[name] = matched[i]
+				params[name] = matched[i]
 			}
 		}
 
-		fmt.Printf("parameters: %v\n", parameters)
-		handler = h
+		handler = http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+			ctx := context.WithValue(req.Context(), paramsKey, params)
+			req = req.WithContext(ctx)
+			h.ServeHTTP(w, req)
+		})
 	}
 
 	if handler == nil {
