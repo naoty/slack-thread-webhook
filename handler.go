@@ -1,16 +1,17 @@
 package main
 
 import (
-	"github.com/naoty/slack-thread-webhook/datastore"
 	"fmt"
 	"net/http"
+
+	"github.com/naoty/slack-thread-webhook/datastore"
 
 	"github.com/nlopes/slack"
 )
 
 type handler struct {
 	datastore datastore.Client
-	slack *slack.Client
+	slack     *slack.Client
 }
 
 func (handler handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {

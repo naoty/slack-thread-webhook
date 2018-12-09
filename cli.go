@@ -8,7 +8,7 @@ import (
 
 type cli struct {
 	outStream, errStream io.Writer
-	router *router
+	router               *router
 }
 
 const (
