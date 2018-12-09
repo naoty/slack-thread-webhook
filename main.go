@@ -3,12 +3,15 @@ package main
 import (
 	"os"
 
+	"github.com/naoty/slack-thread-webhook/datastore"
+
 	"github.com/nlopes/slack"
 )
 
 func main() {
+	redis := datastore.NewRedis("")
 	client := slack.New(os.Getenv("SLACK_TOKEN"))
-	handler := handler{slack: client}
+	handler := handler{datastore: redis, slack: client}
 
 	router := &router{}
 	router.post("/hooks/(?P<id>\\d+)", handler)
