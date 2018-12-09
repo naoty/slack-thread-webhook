@@ -8,7 +8,7 @@ import (
 
 func main() {
 	client := slack.New(os.Getenv("SLACK_TOKEN"))
-	handler := newHandler(client)
+	handler := handler{slack: client}
 
 	router := &router{}
 	router.post("/hooks/(?P<id>\\d+)", handler)
