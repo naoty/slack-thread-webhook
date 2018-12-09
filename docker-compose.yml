@@ -1,0 +1,5 @@
+version: "3"
+services:
+  slack-thread-webhook:
+    build: .
+    image: slack-thread-webhook
