@@ -18,5 +18,10 @@ func (handler handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 
 	messageParams := slack.NewPostMessageParameters()
-	handler.slack.PostMessage("general", "Hello", messageParams)
+	_, _, err := handler.slack.PostMessage("general", "Hello", messageParams)
+
+	if err != nil {
+		message := fmt.Sprintf("failed to post a message to slack: %v\n", err)
+		http.Error(w, message, http.StatusInternalServerError)
+	}
 }
