@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/naoty/slack-thread-webhook/datastore"
 	"fmt"
 	"net/http"
 
@@ -8,20 +9,25 @@ import (
 )
 
 type handler struct {
+	datastore datastore.Client
 	slack *slack.Client
 }
 
 func (handler handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	requestParams := req.Context().Value(paramsKey).(map[string]string)
-	for key, value := range requestParams {
-		fmt.Printf("key: %v, value: %v\n", key, value)
-	}
-
 	messageParams := slack.NewPostMessageParameters()
-	_, _, err := handler.slack.PostMessage("general", "Hello", messageParams)
-
+	_, ts, err := handler.slack.PostMessage("general", "Hello", messageParams)
 	if err != nil {
 		message := fmt.Sprintf("failed to post a message to slack: %v\n", err)
 		http.Error(w, message, http.StatusInternalServerError)
 	}
+
+	requestParams := req.Context().Value(paramsKey).(map[string]string)
+	id := requestParams["id"]
+	err = handler.datastore.Set(id, ts)
+	if err != nil {
+		message := fmt.Sprintf("failed to set id: %v\n", err)
+		http.Error(w, message, http.StatusInternalServerError)
+	}
+
+	w.WriteHeader(http.StatusCreated)
 }
