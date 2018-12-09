@@ -3,3 +3,12 @@ services:
   slack-thread-webhook:
     build: .
     image: slack-thread-webhook
+    environment:
+      REDIS_HOST: redis
+    env_file: .env
+    ports:
+      - "3000:3000"
+    links:
+      - redis
+  redis:
+    image: redis
