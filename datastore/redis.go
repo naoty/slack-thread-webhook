@@ -26,12 +26,7 @@ func (client *Redis) Get(key string) (string, error) {
 		return "", err
 	}
 
-	value, err := conn.Do("HGET", redisKey, key)
-	if err != nil {
-		return "", err
-	}
-
-	return value.(string), nil
+	return redis.String(conn.Do("HGET", redisKey, key))
 }
 
 // Set stores a value with a key.
