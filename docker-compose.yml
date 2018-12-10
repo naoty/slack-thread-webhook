@@ -10,5 +10,7 @@ services:
       - "3000:3000"
     links:
       - redis
+    volumes:
+      - .:/go/src/github.com/naoty/slack-thread-webhook
   redis:
     image: redis
