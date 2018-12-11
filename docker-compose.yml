@@ -5,6 +5,7 @@ services:
     image: slack-thread-webhook
     environment:
       REDIS_HOST: redis
+      SLACK_CHANNEL: general
     env_file: .env
     ports:
       - "3000:3000"

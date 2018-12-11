@@ -18,7 +18,7 @@ func main() {
 	}
 
 	client := slack.New(os.Getenv("SLACK_TOKEN"))
-	post := handler.Post{Datastore: redis, Slack: client}
+	post := handler.Post{Channel: os.Getenv("SLACK_CHANNEL"), Datastore: redis, Slack: client}
 
 	router := &handler.Router{}
 	router.POST("/hooks/(?P<id>\\d+)", post)
