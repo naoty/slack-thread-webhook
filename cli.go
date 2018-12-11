@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/naoty/slack-thread-webhook/handler"
 )
 
 type cli struct {
 	outStream, errStream io.Writer
-	router               *router
+	router               *handler.Router
 }
 
 const (

@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"context"
@@ -6,17 +6,12 @@ import (
 	"regexp"
 )
 
-type router struct {
+// Router is a handler with routes.
+type Router struct {
 	routes map[string]map[*regexp.Regexp]http.Handler
 }
 
-type contextKey int
-
-const (
-	paramsKey contextKey = iota
-)
-
-func (router *router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+func (router *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	paths, ok := router.routes[req.Method]
 	if !ok {
 		w.WriteHeader(http.StatusNotFound)
@@ -49,7 +44,8 @@ func (router *router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	handler.ServeHTTP(w, req)
 }
 
-func (router *router) post(pattern string, handler http.Handler) {
+// POST registers a handler to a path with POST.
+func (router *Router) POST(pattern string, handler http.Handler) {
 	re, err := regexp.Compile(pattern)
 	if err != nil {
 		return

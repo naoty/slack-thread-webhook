@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/naoty/slack-thread-webhook/datastore"
+	"github.com/naoty/slack-thread-webhook/handler"
 
 	"github.com/nlopes/slack"
 )
@@ -17,10 +18,10 @@ func main() {
 	}
 
 	client := slack.New(os.Getenv("SLACK_TOKEN"))
-	handler := handler{datastore: redis, slack: client}
+	post := handler.Post{Datastore: redis, Slack: client}
 
-	router := &router{}
-	router.post("/hooks/(?P<id>\\d+)", handler)
+	router := &handler.Router{}
+	router.POST("/hooks/(?P<id>\\d+)", post)
 
 	cli := cli{outStream: os.Stdout, errStream: os.Stderr, router: router}
 	status := cli.run(os.Args)
