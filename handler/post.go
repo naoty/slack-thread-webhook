@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/naoty/slack-thread-webhook/datastore"
 
@@ -23,6 +24,13 @@ type Post struct {
 }
 
 func (handler Post) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	contentType := req.Header.Get("Content-Type")
+	if !strings.Contains(contentType, "application/json") {
+		message := fmt.Sprintf("wrong Content-Type: %v", contentType)
+		http.Error(w, message, http.StatusBadRequest)
+		return
+	}
+
 	messageParams := slack.NewPostMessageParameters()
 	requestParams := req.Context().Value(paramsKey).(map[string]string)
 	id := requestParams["id"]
@@ -33,12 +41,14 @@ func (handler Post) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			message := fmt.Sprintf("failed to post a message to slack: %v\n", err)
 			http.Error(w, message, http.StatusInternalServerError)
+			return
 		}
 
 		err = handler.Datastore.Set(id, ts)
 		if err != nil {
 			message := fmt.Sprintf("failed to set id: %v\n", err)
 			http.Error(w, message, http.StatusInternalServerError)
+			return
 		}
 	} else {
 		messageParams.ThreadTimestamp = value
@@ -46,6 +56,7 @@ func (handler Post) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			message := fmt.Sprintf("failed to post a message to slack: %v\n", err)
 			http.Error(w, message, http.StatusInternalServerError)
+			return
 		}
 	}
 
