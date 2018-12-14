@@ -1,9 +1,10 @@
 package handler
 
 import (
-	"context"
 	"net/http"
 	"regexp"
+
+	"github.com/naoty/slack-thread-webhook/handler/wrapper"
 )
 
 // Router is a handler with routes.
@@ -29,11 +30,7 @@ func (router *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			}
 		}
 
-		handler = http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-			ctx := context.WithValue(req.Context(), paramsKey, params)
-			req = req.WithContext(ctx)
-			h.ServeHTTP(w, req)
-		})
+		handler = wrapper.WithParameters(h, params)
 	}
 
 	if handler == nil {

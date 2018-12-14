@@ -6,19 +6,14 @@ import (
 	"strings"
 
 	"github.com/naoty/slack-thread-webhook/datastore"
+	"github.com/naoty/slack-thread-webhook/handler/wrapper"
 
 	"github.com/nlopes/slack"
 )
 
-type contextKey int
-
-const (
-	paramsKey contextKey = iota
-)
-
 // Post is a handler to post messages.
 type Post struct {
-	Channel string
+	Channel   string
 	Datastore datastore.Client
 	Slack     *slack.Client
 }
@@ -32,7 +27,7 @@ func (handler Post) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 
 	messageParams := slack.NewPostMessageParameters()
-	requestParams := req.Context().Value(paramsKey).(map[string]string)
+	requestParams := req.Context().Value(wrapper.ParametersKey).(map[string]string)
 	id := requestParams["id"]
 	value, _ := handler.Datastore.Get(id)
 
