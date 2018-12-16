@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	redis := datastore.NewRedis(os.Getenv("REDIS_HOST"))
+	redis := datastore.NewRedis(os.Getenv("REDIS_URL"))
 	if err := redis.Ping(); err != nil {
 		fmt.Fprintf(os.Stderr, "failed to connect to redis: %v\n", err)
 		os.Exit(1)
