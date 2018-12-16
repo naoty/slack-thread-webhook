@@ -1,8 +1,11 @@
-version: "3"
+version: "3.4"
 services:
   slack-thread-webhook:
-    build: .
-    image: slack-thread-webhook
+    build:
+      context: .
+      target: builder
+    image: slack-thread-webhook:builder
+    command: ["fresh"]
     environment:
       REDIS_HOST: redis
       SLACK_CHANNEL: general
