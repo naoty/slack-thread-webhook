@@ -1,7 +1,6 @@
 FROM golang AS builder
 WORKDIR /go/src/github.com/naoty/slack-thread-webhook
-RUN go get -u github.com/golang/dep/cmd/dep && \
-  go get -u github.com/pilu/fresh
+RUN go get -u github.com/golang/dep/cmd/dep && go get -u github.com/pilu/fresh
 
 ADD Gopkg.toml Gopkg.lock /go/src/github.com/naoty/slack-thread-webhook/
 RUN dep ensure -vendor-only
