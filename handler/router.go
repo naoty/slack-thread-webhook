@@ -30,7 +30,9 @@ func (router *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			}
 		}
 
-		handler = wrapper.WithJSON(h)
+		handler = h
+		handler = wrapper.WithSlack(handler)
+		handler = wrapper.WithJSON(handler)
 		handler = wrapper.WithParameters(handler, params)
 	}
 

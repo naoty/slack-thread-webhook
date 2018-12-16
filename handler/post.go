@@ -18,13 +18,13 @@ type Post struct {
 }
 
 func (handler Post) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	messageParams := slack.NewPostMessageParameters()
+	messageParams := req.Context().Value(wrapper.PostMessageParametersKey).(slack.PostMessageParameters)
 	requestParams := req.Context().Value(wrapper.ParametersKey).(map[string]string)
 	id := requestParams["id"]
 	value, _ := handler.Datastore.Get(id)
 
 	if value == "" {
-		_, ts, err := handler.Slack.PostMessage(handler.Channel, "Hello", messageParams)
+		_, ts, err := handler.Slack.PostMessage(handler.Channel, "", messageParams)
 		if err != nil {
 			message := fmt.Sprintf("failed to post a message to slack: %v\n", err)
 			http.Error(w, message, http.StatusInternalServerError)
@@ -39,7 +39,7 @@ func (handler Post) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		}
 	} else {
 		messageParams.ThreadTimestamp = value
-		_, _, err := handler.Slack.PostMessage(handler.Channel, "Hello", messageParams)
+		_, _, err := handler.Slack.PostMessage(handler.Channel, "", messageParams)
 		if err != nil {
 			message := fmt.Sprintf("failed to post a message to slack: %v\n", err)
 			http.Error(w, message, http.StatusInternalServerError)
