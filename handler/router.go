@@ -30,7 +30,8 @@ func (router *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			}
 		}
 
-		handler = wrapper.WithParameters(h, params)
+		handler = wrapper.WithJSON(h)
+		handler = wrapper.WithParameters(handler, params)
 	}
 
 	if handler == nil {

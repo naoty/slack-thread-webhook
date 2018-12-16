@@ -3,7 +3,6 @@ package handler
 import (
 	"fmt"
 	"net/http"
-	"strings"
 
 	"github.com/naoty/slack-thread-webhook/datastore"
 	"github.com/naoty/slack-thread-webhook/handler/wrapper"
@@ -19,13 +18,6 @@ type Post struct {
 }
 
 func (handler Post) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	contentType := req.Header.Get("Content-Type")
-	if !strings.Contains(contentType, "application/json") {
-		message := fmt.Sprintf("wrong Content-Type: %v", contentType)
-		http.Error(w, message, http.StatusBadRequest)
-		return
-	}
-
 	messageParams := slack.NewPostMessageParameters()
 	requestParams := req.Context().Value(wrapper.ParametersKey).(map[string]string)
 	id := requestParams["id"]
