@@ -9,5 +9,5 @@ jobs:
       - run: docker build -t naoty/slack-thread-webhook .
       - deploy:
           command: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
             docker push naoty/slack-thread-webhook
