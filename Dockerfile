@@ -7,7 +7,7 @@ ADD Gopkg.toml Gopkg.lock /go/src/github.com/naoty/slack-thread-webhook/
 RUN dep ensure -vendor-only
 
 ADD . /go/src/github.com/naoty/slack-thread-webhook/
-RUN go install
+RUN make
 
 FROM gcr.io/distroless/base
 COPY --from=builder /go/bin/slack-thread-webhook /
