@@ -13,7 +13,7 @@ type Redis struct {
 
 // Get returns a value matched to a given key.
 func (client *Redis) Get(key string) (string, error) {
-	conn, err := redis.Dial("tcp", client.URL)
+	conn, err := redis.DialURL(client.URL)
 	if err != nil {
 		return "", err
 	}
@@ -23,7 +23,7 @@ func (client *Redis) Get(key string) (string, error) {
 
 // Set stores a value with a key.
 func (client *Redis) Set(key, value string) error {
-	conn, err := redis.Dial("tcp", client.URL)
+	conn, err := redis.DialURL(client.URL)
 	if err != nil {
 		return err
 	}
@@ -34,7 +34,7 @@ func (client *Redis) Set(key, value string) error {
 
 // Ping checks connection to redis with PING command.
 func (client *Redis) Ping() error {
-	conn, err := redis.Dial("tcp", client.URL)
+	conn, err := redis.DialURL(client.URL)
 	if err != nil {
 		return err
 	}
