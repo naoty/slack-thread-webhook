@@ -15,9 +15,3 @@ jobs:
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker tag slack-thread-webhook naoty/slack-thread-webhook
             docker push naoty/slack-thread-webhook
-      - deploy:
-          name: Push image to Heroku registry
-          command: |
-            docker login -u _ -p $HEROKU_TOKEN registry.heroku.com
-            docker tag slack-thread-webhook registry.heroku.com/$HEROKU_APP/web/slack-thread-webhook
-            docker push registry.heroku.com/$HEROKU_APP/web/slack-thread-webhook
