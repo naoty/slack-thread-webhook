@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 
 	"github.com/naoty/slack-thread-webhook/handler"
 )
@@ -40,8 +41,13 @@ func (cli cli) run(args []string) int {
 		}
 	}
 
-	fmt.Fprintln(cli.outStream, "HTTP server started on :3000")
-	if err := http.ListenAndServe(":3000", cli.router); err != nil {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+
+	fmt.Fprintf(cli.outStream, "HTTP server started on :%s\n", port)
+	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), cli.router); err != nil {
 		fmt.Fprintf(cli.errStream, "%v\n", err)
 		return exitCodeOK
 	}
