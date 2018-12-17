@@ -7,7 +7,7 @@ services:
     image: slack-thread-webhook:builder
     command: ["fresh"]
     environment:
-      REDIS_URL: redis
+      REDIS_URL: redis:6379
       SLACK_CHANNEL: general
     env_file: .env
     ports:
