@@ -29,6 +29,9 @@
   go-tests = true
   unused-packages = true
 
+[metadata.heroku]
+  root-package = "github.com/naoty/slack-thread-webhook"
+
 [[constraint]]
   name = "github.com/nlopes/slack"
   version = "0.4.0"
