@@ -2,7 +2,8 @@ version: 2
 jobs:
   test:
     docker:
-      - image: golang
+      - image: circleci/golang
+    working_directory: /go/src/github.com/naoty/slack-thread-webhook
     steps:
       - checkout
       - run:
