@@ -1,5 +1,13 @@
 version: 2
 jobs:
+  test:
+    docker:
+      - image: golang
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: go test
   build:
     docker:
       - image: docker
@@ -15,3 +23,11 @@ jobs:
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker tag slack-thread-webhook naoty/slack-thread-webhook
             docker push naoty/slack-thread-webhook
+workflows:
+  version: 2
+  main:
+    jobs:
+      - test
+      - build:
+          requires:
+            - test
