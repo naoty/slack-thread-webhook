@@ -6,6 +6,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Download packages
+          command: dep ensure -vendor-only
+      - run:
           name: Run tests
           command: go test
   build:
