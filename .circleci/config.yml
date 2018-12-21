@@ -15,6 +15,9 @@ jobs:
       - run:
           name: Run tests
           command: go test
+      - run:
+          name: Notify finish
+          command: .circleci/notify_finish
   build:
     docker:
       - image: docker
@@ -30,6 +33,11 @@ jobs:
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker tag slack-thread-webhook naoty/slack-thread-webhook
             docker push naoty/slack-thread-webhook
+      - run:
+          name: Notify finish
+          command: |
+            apk add curl
+            .circleci/notify_finish
 workflows:
   version: 2
   main:
