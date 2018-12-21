@@ -21,7 +21,7 @@ func main() {
 	post := handler.Post{Channel: os.Getenv("SLACK_CHANNEL"), Datastore: redis, Slack: client}
 
 	router := &handler.Router{}
-	router.POST("/hooks/(?P<id>\\d+)", post)
+	router.POST("/hooks/(?P<id>\\S+)", post)
 
 	cli := cli{outStream: os.Stdout, errStream: os.Stderr, router: router}
 	status := cli.run(os.Args)
