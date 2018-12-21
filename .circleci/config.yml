@@ -52,7 +52,10 @@ workflows:
   version: 2
   main:
     jobs:
-      - test
+      - notify_start
+      - test:
+          requires:
+            - notify_start
       - build:
           requires:
             - test
