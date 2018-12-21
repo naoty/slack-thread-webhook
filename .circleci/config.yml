@@ -1,5 +1,15 @@
 version: 2
 jobs:
+  notify_start:
+    docker:
+      - image: alpine
+    steps:
+      - checkout
+      - run:
+          name: Notify start
+          command: |
+            apk add curl
+            .circleci/notify_workflow_start
   test:
     docker:
       - image: circleci/golang
@@ -17,7 +27,7 @@ jobs:
           command: go test
       - run:
           name: Notify finish
-          command: .circleci/notify_finish
+          command: .circleci/notify_job_finish
   build:
     docker:
       - image: docker
@@ -37,7 +47,7 @@ jobs:
           name: Notify finish
           command: |
             apk add curl
-            .circleci/notify_finish
+            .circleci/notify_job_finish
 workflows:
   version: 2
   main:
