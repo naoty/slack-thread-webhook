@@ -6,7 +6,7 @@ cat << EOS | curl -X POST -H "Content-Type: application/json" -d @- https://slac
     {
       "color": "good",
       "title": "Finish <${CIRCLE_BUILD_URL}|${CIRCLE_JOB}>",
-      "footer": "<${CIRCLE_REPOSITORY_URL}|${CIRCLE_PROJECT_REPONAME}> | ${CIRCLE_BRANCH}"
+      "footer": "${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} | ${CIRCLE_BRANCH}"
     }
   ]
 }
