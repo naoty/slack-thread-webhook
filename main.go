@@ -18,8 +18,27 @@ func main() {
 	}
 
 	client := slack.New(os.Getenv("SLACK_TOKEN"))
-	post := handler.Post{Channel: os.Getenv("SLACK_CHANNEL"), Datastore: redis, Slack: client}
-	put := handler.Put{Channel: os.Getenv("SLACK_CHANNEL"), Datastore: redis, Slack: client}
+	channels, err := client.GetChannels(true)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "failed to get channels: %v\n", err)
+		os.Exit(1)
+	}
+
+	channelID := ""
+	for _, channel := range channels {
+		if channel.Name == os.Getenv("SLACK_CHANNEL") {
+			channelID = channel.ID
+			break
+		}
+	}
+
+	if channelID == "" {
+		fmt.Fprintf(os.Stderr, "channel not found: %v\n", os.Getenv("SLACK_CHANNEL"))
+		os.Exit(1)
+	}
+
+	post := handler.Post{Channel: channelID, Datastore: redis, Slack: client}
+	put := handler.Put{Channel: channelID, Datastore: redis, Slack: client}
 
 	router := &handler.Router{}
 	router.POST("/hooks/(?P<id>\\S+)", post)
