@@ -49,6 +49,15 @@ func (router *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 // POST registers a handler to a path with POST.
 func (router *Router) POST(pattern string, handler http.Handler) {
+	router.register("POST", pattern, handler)
+}
+
+// PUT registers a handler to a path with PUT.
+func (router *Router) PUT(pattern string, handler http.Handler) {
+	router.register("PUT", pattern, handler)
+}
+
+func (router *Router) register(method, pattern string, handler http.Handler) {
 	re, err := regexp.Compile(pattern)
 	if err != nil {
 		return
@@ -58,10 +67,10 @@ func (router *Router) POST(pattern string, handler http.Handler) {
 		router.routes = make(map[string]map[*regexp.Regexp]http.Handler)
 	}
 
-	_, ok := router.routes["POST"]
+	_, ok := router.routes[method]
 	if !ok {
-		router.routes["POST"] = make(map[*regexp.Regexp]http.Handler)
+		router.routes[method] = make(map[*regexp.Regexp]http.Handler)
 	}
 
-	router.routes["POST"][re] = handler
+	router.routes[method][re] = handler
 }
