@@ -1,0 +1,13 @@
+#!/bin/sh
+
+cat << EOS | curl -X PUT -H "Content-Type: application/json" -d @- https://slack-thread-webhook.herokuapp.com/hooks/${CIRCLE_WORKFLOW_ID}
+{
+  "attachments": [
+    {
+      "color": "good",
+      "title": "Finish <https://circleci.com/workflow-run/${CIRCLE_WORKFLOW_ID}|${CIRCLE_WORKFLOW_ID}>",
+      "footer": "${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} | ${CIRCLE_BRANCH}"
+    }
+  ]
+}
+EOS
