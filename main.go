@@ -19,9 +19,11 @@ func main() {
 
 	client := slack.New(os.Getenv("SLACK_TOKEN"))
 	post := handler.Post{Channel: os.Getenv("SLACK_CHANNEL"), Datastore: redis, Slack: client}
+	put := handler.Put{Channel: os.Getenv("SLACK_CHANNEL"), Datastore: redis, Slack: client}
 
 	router := &handler.Router{}
 	router.POST("/hooks/(?P<id>\\S+)", post)
+	router.PUT("/hooks/(?P<id>\\S+)", put)
 
 	cli := cli{outStream: os.Stdout, errStream: os.Stderr, router: router}
 	status := cli.run(os.Args)
