@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"regexp"
 
@@ -15,7 +16,8 @@ type Router struct {
 func (router *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	paths, ok := router.routes[req.Method]
 	if !ok {
-		w.WriteHeader(http.StatusNotFound)
+		message := fmt.Sprintf("not found: %v %v\n", req.Method, req.URL.String())
+		http.Error(w, message, http.StatusNotFound)
 		return
 	}
 
@@ -37,7 +39,8 @@ func (router *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if handler == nil {
-		w.WriteHeader(http.StatusNotFound)
+		message := fmt.Sprintf("not found: %v %v\n", req.Method, req.URL.String())
+		http.Error(w, message, http.StatusNotFound)
 		return
 	}
 
