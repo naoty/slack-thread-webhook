@@ -41,12 +41,11 @@ jobs:
       - run:
           name: Notify finish
           command: |
-            apk add curl
+            apk add bash curl
             .circleci/notify_job_finish
       - run:
           name: Notify workflow success
           command: |
-            apk add bash curl
             .circleci/notify_workflow_success
 workflows:
   version: 2
