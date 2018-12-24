@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 git_info=$(git log -1 --pretty="%an: %s")
 sha1=$(git rev-parse --short HEAD)

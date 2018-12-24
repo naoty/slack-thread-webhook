@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 cat << EOS | curl -X POST -H "Content-Type: application/json" -d @- https://slack-thread-webhook.herokuapp.com/hooks/${CIRCLE_WORKFLOW_ID}
 {
