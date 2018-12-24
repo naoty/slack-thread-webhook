@@ -1,13 +1,14 @@
 #!/bin/bash
 
 git_info=$(git log -1 --pretty="%an: %s")
+sha1=$(git rev-parse --short HEAD)
 
 cat << EOS | curl -X POST -H "Content-Type: application/json" -d @- https://slack-thread-webhook.herokuapp.com/hooks/${CIRCLE_WORKFLOW_ID}
 {
   "attachments": [
     {
       "title": "<https://circleci.com/workflow-run/${CIRCLE_WORKFLOW_ID}|Start>",
-      "text": "${git_info} (<${CIRCLE_COMPARE_URL}|${CIRCLE_SHA1}>)",
+      "text": "${git_info} (${sha1})",
       "footer": "${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} | ${CIRCLE_BRANCH}"
     }
   ]
