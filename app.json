@@ -1,0 +1,14 @@
+{
+  "name": "slack-thread-webhook",
+  "description": "Slack webhook to post threaded messages",
+  "repository": "https://github.com/naoty/slack-thread-webhook",
+  "addons": ["heroku-redis"],
+  "env": {
+    "SLACK_TOKEN": {
+      "description": "A bot user token to post messages to Slack"
+    },
+    "SLACK_CHANNEL": {
+      "description": "A channel name where messages are posted"
+    }
+  }
+}
