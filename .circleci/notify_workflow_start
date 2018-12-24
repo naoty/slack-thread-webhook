@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 git_info=%(git log -1 --pretty="%an: %s")
 

@@ -1,21 +1,16 @@
 version: 2
 jobs:
-  notify_start:
-    docker:
-      - image: alpine
-    steps:
-      - checkout
-      - run:
-          name: Notify start
-          command: |
-            apk add curl
-            .circleci/notify_workflow_start
   test:
     docker:
       - image: circleci/golang
     working_directory: /go/src/github.com/naoty/slack-thread-webhook
     steps:
       - checkout
+      - run:
+          name: Notify workflow start
+          command: |
+            apk add bash curl
+            .circleci/notify_workflow_start
       - run:
           name: Install dep
           command: curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
@@ -48,27 +43,16 @@ jobs:
           command: |
             apk add curl
             .circleci/notify_job_finish
-  notify_success:
-    docker:
-      - image: alpine
-    steps:
-      - checkout
       - run:
-          name: Notify success
+          name: Notify workflow success
           command: |
-            apk add curl
+            apk add bash curl
             .circleci/notify_workflow_success
 workflows:
   version: 2
   main:
     jobs:
-      - notify_start
-      - test:
-          requires:
-            - notify_start
+      - test
       - build:
           requires:
             - test
-      - notify_success:
-          requires:
-            - build
