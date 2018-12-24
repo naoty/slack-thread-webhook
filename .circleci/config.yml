@@ -21,6 +21,12 @@ jobs:
       - run:
           name: Notify finish
           command: .circleci/notify_job_finish
+      - run:
+          name: Notify failure
+          when: on_fail
+          command: |
+            .circleci/notify_job_failed
+            .circleci/notify_workflow_failed
   build:
     docker:
       - image: docker
@@ -45,6 +51,12 @@ jobs:
       - run:
           name: Notify workflow success
           command: .circleci/notify_workflow_success
+      - run:
+          name: Notify failure
+          when: on_fail
+          command: |
+            .circleci/notify_job_failed
+            .circleci/notify_workflow_failed
 workflows:
   version: 2
   main:
