@@ -8,9 +8,7 @@ jobs:
       - checkout
       - run:
           name: Notify workflow start
-          command: |
-            apk add bash curl
-            .circleci/notify_workflow_start
+          command: .circleci/notify_workflow_start
       - run:
           name: Install dep
           command: curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
@@ -41,12 +39,10 @@ jobs:
       - run:
           name: Notify finish
           command: |
-            apk add bash curl
             .circleci/notify_job_finish
       - run:
           name: Notify workflow success
-          command: |
-            .circleci/notify_workflow_success
+          command: .circleci/notify_workflow_success
 workflows:
   version: 2
   main:
