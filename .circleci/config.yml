@@ -48,16 +48,16 @@ jobs:
           command: |
             apk add curl
             .circleci/notify_job_finish
-  notify_finish:
+  notify_success:
     docker:
       - image: alpine
     steps:
       - checkout
       - run:
-          name: Notify finish
+          name: Notify success
           command: |
             apk add curl
-            .circleci/notify_workflow_finish
+            .circleci/notify_workflow_success
 workflows:
   version: 2
   main:
@@ -69,6 +69,6 @@ workflows:
       - build:
           requires:
             - test
-      - notify_finish:
+      - notify_success:
           requires:
             - build
