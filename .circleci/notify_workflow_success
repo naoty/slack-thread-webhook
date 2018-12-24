@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git_info=%(git log -1 --pretty="%an: %s")
+git_info=$(git log -1 --pretty="%an: %s")
 
 cat << EOS | curl -X PUT -H "Content-Type: application/json" -d @- https://slack-thread-webhook.herokuapp.com/hooks/${CIRCLE_WORKFLOW_ID}
 {
