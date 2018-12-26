@@ -21,35 +21,6 @@ jobs:
       - run:
           name: Notify finish
           command: .circleci/notify_job_finish
-      - run:
-          name: Notify failure
-          when: on_fail
-          command: |
-            .circleci/notify_job_failed
-            .circleci/notify_workflow_failed
-  build:
-    docker:
-      - image: docker
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Install requirements
-          command: apk add bash git curl
-      - run:
-          name: Build image
-          command: docker build -t slack-thread-webhook .
-      - deploy:
-          name: Push image to Docker Hub
-          command: |
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker tag slack-thread-webhook naoty/slack-thread-webhook
-            docker push naoty/slack-thread-webhook
-      - run:
-          name: Notify finish
-          command: .circleci/notify_job_finish
-      - run:
-          name: Notify workflow success
           command: .circleci/notify_workflow_success
       - run:
           name: Notify failure
@@ -62,6 +33,3 @@ workflows:
   main:
     jobs:
       - test
-      - build:
-          requires:
-            - test
