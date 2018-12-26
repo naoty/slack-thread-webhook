@@ -11,3 +11,6 @@ slack-thread-webhook accepts requests at following endpoints. `<id>` is non-whit
 
 ### Heroku
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+### Docker
+Docker images are published at [Docker Hub](https://hub.docker.com/r/naoty/slack-thread-webhook).
