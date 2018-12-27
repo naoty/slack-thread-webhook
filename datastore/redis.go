@@ -17,6 +17,7 @@ func (client *Redis) Get(key string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	defer conn.Close()
 
 	return redis.String(conn.Do("HGET", redisKey, key))
 }
@@ -27,6 +28,7 @@ func (client *Redis) Set(key, value string) error {
 	if err != nil {
 		return err
 	}
+	defer conn.Close()
 
 	_, err = conn.Do("HSET", redisKey, key, value)
 	return err
@@ -38,6 +40,7 @@ func (client *Redis) Ping() error {
 	if err != nil {
 		return err
 	}
+	defer conn.Close()
 
 	_, err = conn.Do("PING")
 	return err
